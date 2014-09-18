@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jack Phoenix <jack@shoutwiki.com>"
+		]
+	},
+	"newsbox-createwiki": "Create a wiki",
+	"newsbox-forum": "ShoutWiki forum",
+	"newsbox-homepage": "ShoutWiki Home",
+	"newsbox-title": "ShoutWiki messages"
+}
