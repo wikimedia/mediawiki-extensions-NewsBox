@@ -3,6 +3,10 @@
  * Main class for outputting the news box on most skins.
  *
  * @file
+ * @ingroup Extensions
+ * @author Jack Phoenix <jack@shoutwiki.com>
+ * @license http://en.wikipedia.org/wiki/Public_domain Public domain
+ * @link https://www.mediawiki.org/wiki/Extensions:NewsBox Documentation
  * @todo FIXME: epic code duplication between render() and renderForMonaco()
  * @todo FIXME: home page/CW link/forum link should all be rendered via something
  *              like Skin::addToSidebarPlain() so that we could put all of those
@@ -13,14 +17,14 @@ class NewsBox {
 	/**
 	 * Prints the news box.
 	 *
-	 * @param $skin Object: instance of Skin class or its subclass
-	 * @param $bar
-	 * @return Boolean: true
+	 * @param Skin $skin Instance of Skin class or its subclass
+	 * @param array $bar
+	 * @return bool
 	 */
 	public static function render( $skin, &$bar ) {
 		global $wgLangToCentralMap, $wgContLang, $wgUser, $wgRequest;
 
-		$skinName = strtolower( $wgUser->getSkin()->getSkinName() );
+		$skinName = strtolower( $skin->getSkinName() );
 
 		// Skip Aurora for now, as per discussion with Isarra on 11 January 2014
 		// We need to do this here, because otherwise the "ShoutWiki messages"
@@ -55,9 +59,9 @@ class NewsBox {
 		// as ShoutWiki Hub is an English wiki
 		$isEnglish = in_array( $langCode, array( 'en', 'en-ca', 'en-gb' ) );
 		if ( $isEnglish ) {
-			$message = wfMessage( 'newsbox' );
+			$message = $skin->msg( 'newsbox' );
 		} else {
-			$message = wfMessage( 'newsbox' )->inLanguage( $langCode );
+			$message = $skin->msg( 'newsbox' )->inLanguage( $langCode );
 		}
 
 		// Eminence needs extra <span> tags around the link titles and even
@@ -68,10 +72,10 @@ class NewsBox {
 			case 'bluecloud':
 				$out = "\t\t" . '<ul class="navlist">
 			<li><a href="' . $hubURL . '">' .
-				wfMessage( 'newsbox-homepage' )->plain() .
+				$skin->msg( 'newsbox-homepage' )->plain() .
 			'</a></li>
 			<li><a href="http://www.shoutwiki.com/wiki/Special:CreateWiki">' .
-				wfMessage( 'newsbox-createwiki' )->plain() .
+				$skin->msg( 'newsbox-createwiki' )->plain() .
 			'</a></li>';
 				$out .= NewsBox::getForumHTML();
 				if ( !$message->isBlank() ) {
@@ -81,10 +85,10 @@ class NewsBox {
 				break;
 			case 'eminence':
 				$out = "\t\t" . '<li><a href="' . $hubURL . '"><span>' .
-				wfMessage( 'newsbox-homepage' )->plain() .
+				$skin->msg( 'newsbox-homepage' )->plain() .
 			'</span></a></li>
 			<li><a href="http://www.shoutwiki.com/wiki/Special:CreateWiki"><span>' .
-				wfMessage( 'newsbox-createwiki' )->plain() .
+				$skin->msg( 'newsbox-createwiki' )->plain() .
 			'</span></a></li>';
 				$out .= NewsBox::getForumHTML();
 				if ( !$message->isBlank() ) {
@@ -102,15 +106,15 @@ class NewsBox {
 				// This is the generic version that'll work for most skins
 				$out = "\t\t" .
 			'<ul><li><a href="' . $hubURL . '">' .
-				wfMessage( 'newsbox-homepage' )->plain() .
+				$skin->msg( 'newsbox-homepage' )->plain() .
 			'</a></li>
 			<li><a href="http://www.shoutwiki.com/wiki/Special:CreateWiki">' .
-				wfMessage( 'newsbox-createwiki' )->plain() .
+				$skin->msg( 'newsbox-createwiki' )->plain() .
 			'</a></li>' . NewsBox::getForumHTML() .
 		'</ul>';
 				// If the main NewsBox message has some content, insert a <hr /> after
 				// the two SW-related links and show that message's content
-				if( !$message->isBlank() ) {
+				if ( !$message->isBlank() ) {
 					$out .= "\n<hr />" .
 				'<ul>
 					<li>
@@ -123,7 +127,7 @@ class NewsBox {
 				break;
 		}
 
-		$title = wfMessage( 'newsbox-title' )->plain();
+		$title = $skin->msg( 'newsbox-title' )->plain();
 		$bar[$title] = $out;
 		return true;
 	}
@@ -132,7 +136,7 @@ class NewsBox {
 	 * The Monaco skin is a special case, as it overrides the buildSidebar()
 	 * function, which is where SkinBuildSidebar hook is.
 	 *
-	 * @return Boolean: true
+	 * @return bool
 	 */
 	public static function renderForMonaco() {
 		global $wgLangToCentralMap, $wgContLang, $wgUser, $wgRequest;
@@ -174,15 +178,15 @@ class NewsBox {
 		echo '<div id="sidebar_2" class="sidebar">
 			<dl id="WidgetNewsBox_wg" class="widget WidgetNewsBox">
 				<dt id="WidgetNewsBox_header" class="color1 widget_title" style="cursor: default;">' .
-					wfMsg( 'newsbox-title' ) .
+					wfMessage( 'newsbox-title' )->plain() .
 				'</dt>
 			<dd id="WidgetNewsBox_content" class="shadow widget_contents">
 				<ul>
 					<li><a href="' . $hubURL . '">' .
-						wfMsg( 'newsbox-homepage' ) .
+						wfMessage( 'newsbox-homepage' )->plain() .
 					'</a></li>
 					<li><a href="http://www.shoutwiki.com/wiki/Special:CreateWiki">' .
-						wfMsg( 'newsbox-createwiki' ) .
+						wfMessage( 'newsbox-createwiki' )->plain() .
 					'</a></li>' . NewsBox::getForumHTML() .
 				'</ul>
 				<hr />
@@ -204,7 +208,7 @@ class NewsBox {
 	 * [[MediaWiki:Newsbox-forum-url]] is non-empty) and the wrapping <li>
 	 * element.
 	 *
-	 * @return String
+	 * @return string
 	 */
 	public static function getForumHTML() {
 		global $wgUser;
