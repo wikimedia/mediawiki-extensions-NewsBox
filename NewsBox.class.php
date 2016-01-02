@@ -211,9 +211,9 @@ class NewsBox {
 	 * @return string
 	 */
 	public static function getForumHTML() {
-		global $wgUser;
+		global $wgOut;
 
-		$skinName = strtolower( $wgUser->getSkin()->getSkinName() );
+		$skinName = strtolower( $wgOut->getSkin()->getSkinName() );
 		$html = '';
 		$url = wfMessage( 'newsbox-forum-url' )->inLanguage( 'en' );
 		if ( !$url->isDisabled() ) {
