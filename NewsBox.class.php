@@ -178,15 +178,15 @@ class NewsBox {
 		echo '<div id="sidebar_2" class="sidebar">
 			<dl id="WidgetNewsBox_wg" class="widget WidgetNewsBox">
 				<dt id="WidgetNewsBox_header" class="color1 widget_title" style="cursor: default;">' .
-					wfMessage( 'newsbox-title' )->plain() .
+					wfMessage( 'newsbox-title' )->escaped() .
 				'</dt>
 			<dd id="WidgetNewsBox_content" class="shadow widget_contents">
 				<ul>
 					<li><a href="' . $hubURL . '">' .
-						wfMessage( 'newsbox-homepage' )->plain() .
+						wfMessage( 'newsbox-homepage' )->escaped() .
 					'</a></li>
 					<li><a href="http://www.shoutwiki.com/wiki/Special:CreateWiki">' .
-						wfMessage( 'newsbox-createwiki' )->plain() .
+						wfMessage( 'newsbox-createwiki' )->escaped() .
 					'</a></li>' . NewsBox::getForumHTML() .
 				'</ul>
 				<hr />
@@ -219,11 +219,12 @@ class NewsBox {
 		if ( !$url->isDisabled() ) {
 			// Eminence needs those fucking <span>s in there
 			if ( $skinName == 'eminence' ) {
+				// FIXME: Use Html::element() so href attribute will be escaped
 				$html = '<li><a href="' . $url->plain() . '"><span>' .
-					wfMessage( 'newsbox-forum' )->plain() . '</span></a></li>' . "\n";
+					wfMessage( 'newsbox-forum' )->escaped() . '</span></a></li>' . "\n";
 			} else {
 				$html = '<li><a href="' . $url->plain() . '">' .
-					wfMessage( 'newsbox-forum' )->plain() . '</a></li>' . "\n";
+					wfMessage( 'newsbox-forum' )->escaped() . '</a></li>' . "\n";
 			}
 		}
 
