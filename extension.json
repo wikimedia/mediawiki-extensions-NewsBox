@@ -1,6 +1,6 @@
 {
 	"name": "NewsBox",
-	"version": "2.1.5",
+	"version": "2.2",
 	"author": [
 		"Jack Phoenix"
 	],
@@ -17,12 +17,8 @@
 		"NewsBox": "NewsBox.class.php"
 	},
 	"Hooks": {
-		"SkinBuildSidebar": [
-			"NewsBox::render"
-		],
-		"MonacoWidgets": [
-			"NewsBox::renderForMonaco"
-		]
+		"SkinBuildSidebar": "NewsBox::render",
+		"MonacoWidgets": "NewsBox::renderForMonaco"
 	},
 	"manifest_version": 1
 }

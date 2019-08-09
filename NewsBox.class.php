@@ -4,9 +4,9 @@
  *
  * @file
  * @ingroup Extensions
- * @author Jack Phoenix <jack@shoutwiki.com>
- * @license http://en.wikipedia.org/wiki/Public_domain Public domain
- * @link https://www.mediawiki.org/wiki/Extensions:NewsBox Documentation
+ * @author Jack Phoenix
+ * @license https://en.wikipedia.org/wiki/Public_domain Public domain
+ * @link https://www.mediawiki.org/wiki/Extension:NewsBox Documentation
  * @todo FIXME: epic code duplication between render() and renderForMonaco()
  * @todo FIXME: home page/CW link/forum link should all be rendered via something
  *              like Skin::addToSidebarPlain() so that we could put all of those
@@ -19,10 +19,9 @@ class NewsBox {
 	 *
 	 * @param Skin $skin Instance of Skin class or its subclass
 	 * @param array $bar
-	 * @return bool
 	 */
 	public static function render( $skin, &$bar ) {
-		global $wgLangToCentralMap, $wgContLang, $wgUser, $wgRequest;
+		global $wgLangToCentralMap;
 
 		$skinName = strtolower( $skin->getSkinName() );
 
@@ -35,20 +34,22 @@ class NewsBox {
 			return true;
 		}
 
-		$hubURL = !empty( $wgLangToCentralMap[$wgContLang->getCode()] ) ?
-					$wgLangToCentralMap[$wgContLang->getCode()] :
+		$contLang = MediaWiki\MediaWikiServices::getInstance()->getContentLanguage();
+		$hubURL = !empty( $wgLangToCentralMap[$contLang->getCode()] ) ?
+					$wgLangToCentralMap[$contLang->getCode()] :
 					'http://www.shoutwiki.com/';
 
 		// Assume site language code by default
-		$langCode = $wgContLang->getCode();
+		$langCode = $contLang->getCode();
 
-		// Check for user preferences (registed users only)
-		if ( $wgUser->isLoggedIn() ) {
-			$langCode = $wgUser->getOption( 'language' );
+		// Check for user preferences (registered users only)
+		$user = $skin->getUser();
+		if ( $user->isLoggedIn() ) {
+			$langCode = $user->getOption( 'language' );
 		}
 
 		// Uselang parameter in URL
-		$useLang = $wgRequest->getVal( 'uselang' );
+		$useLang = $skin->getRequest()->getVal( 'uselang' );
 		if ( $useLang && Language::isValidCode( $useLang ) ) {
 			$langCode = $useLang;
 		}
@@ -57,7 +58,7 @@ class NewsBox {
 		// to [[MediaWiki:Newsbox/en]] or [[MediaWiki:Newsbox/en-gb]] as we will
 		// use ShoutWiki Hub's default Newsbox message for English-language wikis
 		// as ShoutWiki Hub is an English wiki
-		$isEnglish = in_array( $langCode, array( 'en', 'en-ca', 'en-gb' ) );
+		$isEnglish = in_array( $langCode, [ 'en', 'en-ca', 'en-gb' ] );
 		if ( $isEnglish ) {
 			$message = $skin->msg( 'newsbox' );
 		} else {
@@ -129,32 +130,34 @@ class NewsBox {
 
 		$title = $skin->msg( 'newsbox-title' )->plain();
 		$bar[$title] = $out;
-		return true;
 	}
 
 	/**
 	 * The Monaco skin is a special case, as it overrides the buildSidebar()
 	 * function, which is where SkinBuildSidebar hook is.
 	 *
-	 * @return bool
+	 * @param SkinMonaco $monaco
+	 * @param MonacoTemplate $tpl
 	 */
-	public static function renderForMonaco() {
-		global $wgLangToCentralMap, $wgContLang, $wgUser, $wgRequest;
+	public static function renderForMonaco( $monaco, $tpl ) {
+		global $wgLangToCentralMap;
 
-		$hubURL = !empty( $wgLangToCentralMap[$wgContLang->getCode()] ) ?
-					$wgLangToCentralMap[$wgContLang->getCode()] :
+		$contLang = MediaWiki\MediaWikiServices::getInstance()->getContentLanguage();
+		$hubURL = !empty( $wgLangToCentralMap[$contLang->getCode()] ) ?
+					$wgLangToCentralMap[$contLang->getCode()] :
 					'http://www.shoutwiki.com/';
 
 		// Assume site language code by default
-		$langCode = $wgContLang->getCode();
+		$langCode = $contLang->getCode();
 
-		// Check for user preferences (registed users only)
-		if ( $wgUser->isLoggedIn() ) {
-			$langCode = $wgUser->getOption( 'language' );
+		// Check for user preferences (registered users only)
+		$user = $monaco->getUser();
+		if ( $user->isLoggedIn() ) {
+			$langCode = $user->getOption( 'language' );
 		}
 
 		// Uselang parameter in URL
-		$useLang = $wgRequest->getVal( 'uselang' );
+		$useLang = $monaco->getRequest()->getVal( 'uselang' );
 		if ( $useLang && Language::isValidCode( $useLang ) ) {
 			$langCode = $useLang;
 		}
@@ -163,11 +166,11 @@ class NewsBox {
 		// to [[MediaWiki:Newsbox/en]] or [[MediaWiki:Newsbox/en-gb]] as we will
 		// use ShoutWiki Hub's default Newsbox message for English-language wikis
 		// as ShoutWiki Hub is an English wiki
-		$isEnglish = in_array( $langCode, array( 'en', 'en-ca', 'en-gb' ) );
+		$isEnglish = in_array( $langCode, [ 'en', 'en-ca', 'en-gb' ] );
 		if ( $isEnglish ) {
-			$message = wfMessage( 'newsbox' );
+			$message = $monaco->msg( 'newsbox' );
 		} else {
-			$message = wfMessage( 'newsbox' )->inLanguage( $langCode );
+			$message = $monaco->msg( 'newsbox' )->inLanguage( $langCode );
 		}
 
 		$foo = '';
@@ -178,15 +181,15 @@ class NewsBox {
 		echo '<div id="sidebar_2" class="sidebar">
 			<dl id="WidgetNewsBox_wg" class="widget WidgetNewsBox">
 				<dt id="WidgetNewsBox_header" class="color1 widget_title" style="cursor: default;">' .
-					wfMessage( 'newsbox-title' )->escaped() .
+					$monaco->msg( 'newsbox-title' )->escaped() .
 				'</dt>
 			<dd id="WidgetNewsBox_content" class="shadow widget_contents">
 				<ul>
 					<li><a href="' . $hubURL . '">' .
-						wfMessage( 'newsbox-homepage' )->escaped() .
+						$monaco->msg( 'newsbox-homepage' )->escaped() .
 					'</a></li>
 					<li><a href="http://www.shoutwiki.com/wiki/Special:CreateWiki">' .
-						wfMessage( 'newsbox-createwiki' )->escaped() .
+						$monaco->msg( 'newsbox-createwiki' )->escaped() .
 					'</a></li>' . NewsBox::getForumHTML() .
 				'</ul>
 				<hr />
@@ -199,8 +202,6 @@ class NewsBox {
 			</dd>
 		</dl>
 	</div>' . "\n";
-
-		return true;
 	}
 
 	/**
