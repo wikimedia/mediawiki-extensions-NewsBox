@@ -91,8 +91,7 @@ class NewsBox {
 			]
 		);
 
-		$title = $skin->msg( 'newsbox-title' )->plain();
-		$bar[$title] = $out;
+		$bar['newsbox-title'] = $out;
 	}
 
 	/**
