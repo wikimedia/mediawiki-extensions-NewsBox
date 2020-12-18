@@ -1,0 +1,18 @@
+<ul class="navlist">
+	<li>
+		<a href="{{hubURL}}">{{newsbox-homepage}}</a>
+	</li>
+	<li>
+		<a href="http://www.shoutwiki.com/wiki/Special:CreateWiki">{{newsbox-createwiki}}</a>
+	</li>
+	{{#showForumLink}}
+	<li>
+		<a href="{{forumURL}}">{{newsbox-forum}}</a>
+	</li>
+	{{/showForumLink}}
+	{{#hasNews}}
+	<li>
+		{{{newsBoxContents}}}
+	</li>
+	{{/hasNews}}
+</ul>

@@ -1,0 +1,30 @@
+<div id="sidebar_2" class="sidebar">
+	<dl id="WidgetNewsBox_wg" class="widget WidgetNewsBox">
+		<dt id="WidgetNewsBox_header" class="color1 widget_title" style="cursor: default;">
+			{{newsbox-title}}
+		</dt>
+		<dd id="WidgetNewsBox_content" class="shadow widget_contents">
+			<ul>
+				<li>
+					<a href="{{hubURL}}">{{newsbox-homepage}}</a>
+					</li>
+				<li>
+					<a href="http://www.shoutwiki.com/wiki/Special:CreateWiki">{{newsbox-createwiki}}</a>
+				</li>
+				{{#showForumLink}}
+				<li>
+					<a href="{{forumURL}}">{{newsbox-forum}}</a>
+				</li>
+				{{/showForumLink}}
+			</ul>
+			<hr />
+			<ul>
+				<li>
+					<p>
+						{{{newsBoxContents}}}
+					</p>
+				</li>
+			</ul>
+		</dd>
+	</dl>
+</div>
