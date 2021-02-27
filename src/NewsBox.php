@@ -18,7 +18,8 @@ class NewsBox {
 	 * Prints the news box.
 	 *
 	 * @param Skin $skin Instance of Skin class or its subclass
-	 * @param array $bar
+	 * @param array &$bar
+	 * @return true|void
 	 */
 	public static function render( $skin, &$bar ) {
 		global $wgLangToCentralMap;

@@ -17,7 +17,7 @@
 		]
 	},
 	"AutoloadClasses": {
-		"NewsBox": "NewsBox.class.php"
+		"NewsBox": "src/NewsBox.php"
 	},
 	"Hooks": {
 		"SkinBuildSidebar": "NewsBox::render",
