@@ -76,7 +76,7 @@ class NewsBox {
 		// around the NewsBox content in order not to look overly fugly, whereas
 		// BlueCloud requires the ul to have class="navlist" and the <hr />
 		// looks bad on BlueCloud so it had to be removed...skins are fun.
-		$templateParser = new TemplateParser( __DIR__ . '/templates' );
+		$templateParser = new TemplateParser( __DIR__ . '/../templates' );
 		$templatedSpecialCases = [ 'bluecloud', 'eminence' ];
 		$out = $templateParser->processTemplate(
 			( in_array( $skinName, $templatedSpecialCases ) ? 'newsbox-' . $skinName : 'newsbox-default' ),
