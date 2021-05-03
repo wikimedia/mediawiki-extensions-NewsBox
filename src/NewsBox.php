@@ -137,7 +137,7 @@ class NewsBox {
 		}
 
 		$forumURL = $monaco->msg( 'newsbox-forum-url' )->inLanguage( 'en' );
-		echo ( new TemplateParser( __DIR__ . '/templates' ) )->processTemplate(
+		echo ( new TemplateParser( __DIR__ . '/../templates' ) )->processTemplate(
 			'newsbox-monaco',
 			[
 				'newsbox-title' => $monaco->msg( 'newsbox-title' )->text(),
