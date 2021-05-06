@@ -49,7 +49,7 @@ class NewsBox {
 
 		// Check for user preferences (registered users only)
 		$user = $skin->getUser();
-		if ( $user->isLoggedIn() ) {
+		if ( $user->isRegistered() ) {
 			$langCode = $user->getOption( 'language' );
 		}
 
@@ -115,7 +115,7 @@ class NewsBox {
 
 		// Check for user preferences (registered users only)
 		$user = $monaco->getUser();
-		if ( $user->isLoggedIn() ) {
+		if ( $user->isRegistered() ) {
 			$langCode = $user->getOption( 'language' );
 		}
 
