@@ -50,11 +50,12 @@ class NewsBox {
 		// Check for user preferences (registered users only)
 		$user = $skin->getUser();
 		if ( $user->isRegistered() ) {
-			$langCode = $user->getOption( 'language' );
+			$langCode = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsManager()
+				->getOption( $user, 'language' );
 		}
 
 		// Uselang parameter in URL
-		$useLang = $skin->getRequest()->getVal( 'uselang' );
+		$useLang = $skin->getRequest()->getRawVal( 'uselang' );
 		if ( $useLang && Language::isValidCode( $useLang ) ) {
 			$langCode = $useLang;
 		}
@@ -116,11 +117,12 @@ class NewsBox {
 		// Check for user preferences (registered users only)
 		$user = $monaco->getUser();
 		if ( $user->isRegistered() ) {
-			$langCode = $user->getOption( 'language' );
+			$langCode = MediaWiki\MediaWikiServices::getInstance()->getUserOptionsManager()
+				->getOption( $user, 'language' );
 		}
 
 		// Uselang parameter in URL
-		$useLang = $monaco->getRequest()->getVal( 'uselang' );
+		$useLang = $monaco->getRequest()->getRawVal( 'uselang' );
 		if ( $useLang && Language::isValidCode( $useLang ) ) {
 			$langCode = $useLang;
 		}
