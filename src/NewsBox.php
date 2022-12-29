@@ -56,7 +56,7 @@ class NewsBox {
 
 		// Uselang parameter in URL
 		$useLang = $skin->getRequest()->getRawVal( 'uselang' );
-		if ( $useLang && Language::isValidCode( $useLang ) ) {
+		if ( $useLang && MediaWiki\MediaWikiServices::getInstance()->getLanguageNameUtils()->isValidCode( $useLang ) ) {
 			$langCode = $useLang;
 		}
 
@@ -123,7 +123,7 @@ class NewsBox {
 
 		// Uselang parameter in URL
 		$useLang = $monaco->getRequest()->getRawVal( 'uselang' );
-		if ( $useLang && Language::isValidCode( $useLang ) ) {
+		if ( $useLang && MediaWiki\MediaWikiServices::getInstance()->getLanguageNameUtils()->isValidCode( $useLang ) ) {
 			$langCode = $useLang;
 		}
 
