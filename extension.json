@@ -21,6 +21,7 @@
 	},
 	"Hooks": {
 		"SkinBuildSidebar": "NewsBox::render",
+		"SkinAfterPortlet": "NewsBox::onSkinAfterPortlet",
 		"MonacoWidgets": "NewsBox::renderForMonaco"
 	},
 	"manifest_version": 1
