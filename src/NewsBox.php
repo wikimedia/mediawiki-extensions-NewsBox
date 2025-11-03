@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\Html\TemplateParser;
+
 /**
  * Main class for outputting the news box.
  *
